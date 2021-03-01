@@ -1,6 +1,10 @@
+import pymongo
+from pymongo import MongoClient
+from datetime import date, datetime, timedelta
 from flask import Flask, render_template, redirect
 from flask_pymongo import PyMongo
-from pymongo import MongoClient
+from config import api_key
+
 
 # Create connection to mongoDB
 client = MongoClient('mongodb://localhost:27017')
