@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>News</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" integrity="sha512-5fsy+3xG8N/1PV5MIJz9ZsWpkltijBI48gBzQ/Z2eVATePGHOkMIn+xTDHIfTZFVb9GMpflF2wOWItqxAP2oLQ==" crossorigin="anonymous" />
+
+
+    </head>
+    <body>
+        <form class="search">
+            <label for="">News</label>
+            <input class="input" type="text"   />
+            <input type="submit" />
+        </form>
+
+        <div class="container">
+            <ul class="news-list"></ul>
+        </div>
+    
+    <script>
+        const searchForm = document.querySelector('.search');
+        const input = document.querySelector('.input');
+        
+
+        searchForm.addEventListener('submit', retrieve)
+
+        function retrieve(e) {
+            
+            const newsList = document.querySelector('.news-list');    
+
+            //show 'error' message box when input field is empty 
+            if (input.value == ''){
+                alert('Input field is empty')
+                return
+            }
+
+            input.value = input.value.toUpperCase();
+
+            //clears the previous search results
+            newsList.innerHTML ='';
+
+            e.preventDefault();
+
+            const apiKey = '96b47c522f00a29fe1b11cfd2b0b02d9'; 
+
+            let ticker = input.value;
+
+            let url ='https://financialmodelingprep.com/api/v3/stock_news?tickers='+ ticker + '&limit=5&apikey=' + apiKey;
+            
+
+            fetch(url).then((res) => {
+                return res.json();
+            
+            }).then((data) => {
+                console.log(data);
+                
+                data.forEach(data =>{
+                    let li=document.createElement('li');
+                    let a = document.createElement('a');
+                    a.setAttribute('href', data.url);
+                    a.setAttribute('target','_blank'); //opens another tab
+                    a.textContent = data.title;
+                    li.appendChild(a);
+                    newsList.appendChild(li);
+                })
+
+            }).catch((error)=>{
+                console.log(error);
+           })
+
+            console.log(ticker)
+
+        }
+
+    </script>
+    
+    </body>
+</html>
