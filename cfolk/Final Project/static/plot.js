@@ -1,16 +1,3 @@
-// /**
-//  * Helper function to select stock data
-//  * Returns an array of values
-//  * @param {array} rows
-//  * @param {integer} index
-//  * index 0 - Date
-//  * index 1 - Open
-//  * index 2 - High
-//  * index 3 - Low
-//  * index 4 - Close
-//  * index 5 - Volume
-//  */
-
 // Submit Button handler
 function handleSubmit() {
     // Prevent the page from refreshing
@@ -28,10 +15,11 @@ function handleSubmit() {
   }
   
   function buildPlot(stock) {
+
     var apiKey = "ouscx_8Py41g3a53MjCR";
   
     var url = `https://www.quandl.com/api/v3/datasets/WIKI/${stock}.json?start_date=2016-10-01&end_date=2017-10-01&api_key=${apiKey}`;
-  
+
     d3.json(url).then(function(data) {
       // Grab values from the response json object to build the plots
       var name = data.dataset.name;
@@ -39,9 +27,9 @@ function handleSubmit() {
       var startDate = data.dataset.start_date;
       var endDate = data.dataset.end_date;
       // Print the names of the columns
-      console.log(data.dataset.column_names);
+      // console.log(data.dataset.column_names);
       // Print the data for each day
-      console.log(data.dataset.data);
+      // console.log(data.dataset.data);
       var dates = data.dataset.data.map(row => row[0]);
       // console.log(dates);
       var closingPrices = data.dataset.data.map(row => row[4]);

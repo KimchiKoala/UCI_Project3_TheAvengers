@@ -16,53 +16,53 @@ function handleSubmit() {
   
   function buildPlot(stock) {
 
-    // var apiKey = "ouscx_8Py41g3a53MjCR";
+    var apiKey = "ouscx_8Py41g3a53MjCR";
   
-    // var url = `https://www.quandl.com/api/v3/datasets/WIKI/${stock}.json?start_date=2016-10-01&end_date=2017-10-01&api_key=${apiKey}`;
+    var url = `https://www.quandl.com/api/v3/datasets/WIKI/${stock}.json?start_date=2016-10-01&end_date=2017-10-01&api_key=${apiKey}`;
 
-    // d3.json(url).then(function(data) {
-    //   // Grab values from the response json object to build the plots
-    //   var name = data.dataset.name;
-    //   var stock = data.dataset.dataset_code;
-    //   var startDate = data.dataset.start_date;
-    //   var endDate = data.dataset.end_date;
-    //   // Print the names of the columns
-    //   console.log(data.dataset.column_names);
-    //   // Print the data for each day
-    //   console.log(data.dataset.data);
-    //   var dates = data.dataset.data.map(row => row[0]);
-    //   // console.log(dates);
-    //   var closingPrices = data.dataset.data.map(row => row[4]);
-    //   // console.log(closingPrices);
+    d3.json(url).then(function(data) {
+      // Grab values from the response json object to build the plots
+      var name = data.dataset.name;
+      var stock = data.dataset.dataset_code;
+      var startDate = data.dataset.start_date;
+      var endDate = data.dataset.end_date;
+      // Print the names of the columns
+      console.log(data.dataset.column_names);
+      // Print the data for each day
+      console.log(data.dataset.data);
+      var dates = data.dataset.data.map(row => row[0]);
+      // console.log(dates);
+      var closingPrices = data.dataset.data.map(row => row[4]);
+      // console.log(closingPrices);
   
-    //   var trace1 = {
-    //     type: "scatter",
-    //     mode: "lines",
-    //     name: name,
-    //     x: dates,
-    //     y: closingPrices,
-    //     line: {
-    //       color: "#17BECF"
-    //     }
-    //   };
+      var trace1 = {
+        type: "scatter",
+        mode: "lines",
+        name: name,
+        x: dates,
+        y: closingPrices,
+        line: {
+          color: "#17BECF"
+        }
+      };
   
-    //   var data = [trace1];
+      var data = [trace1];
   
-    //   var layout = {
-    //     title: `${stock} closing prices`,
-    //     xaxis: {
-    //       range: [startDate, endDate],
-    //       type: "date"
-    //     },
-    //     yaxis: {
-    //       autorange: true,
-    //       type: "linear"
-    //     }
-    //   };
+      var layout = {
+        title: `${stock} closing prices`,
+        xaxis: {
+          range: [startDate, endDate],
+          type: "date"
+        },
+        yaxis: {
+          autorange: true,
+          type: "linear"
+        }
+      };
   
-    //   Plotly.newPlot("plot", data, layout);
+      Plotly.newPlot("plot", data, layout);
   
-    // });
+    });
   }
   
   // Add event listener for submit button
