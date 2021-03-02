@@ -108,5 +108,5 @@ for response in json_responses:
     upload_ready = {'symbol': symbol, 'historical': reversing_order}
     
     # Send data to MongoDb and add to collection stock_data
-    #db.stock_data.insert_one(upload_ready)
-    #print("MongoDB stock_data updated")
+    db.stock_data.insert_one(upload_ready)
+    print("MongoDB stock_data updated")
