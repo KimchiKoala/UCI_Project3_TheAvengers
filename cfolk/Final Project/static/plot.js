@@ -15,69 +15,51 @@ function handleSubmit() {
   }
   
   function buildPlot(stock) {
+    var api_key = "96b47c522f00a29fe1b11cfd2b0b02d9";
 
-    // var apiKey = "ouscx_8Py41g3a53MjCR";
-  
-    // var url = `https://www.quandl.com/api/v3/datasets/WIKI/${stock}.json?start_date=2016-10-01&end_date=2017-10-01&api_key=${apiKey}`;
-    var url = 'http://127.0.0.1:5000/all'
+    var url = `https://financialmodelingprep.com/api/v3/historical-price-full/${stock}?apikey=${api_key}`;
 
     d3.json(url).then(function(data) {
-      // console.log(data)
-      for (i=0; i <data.length; i++) {
-        objects = data[i].symbol
-        console.log(objects)
+      // console.log(url)
 
-      // }
-      // var output = all[0].symbol[stock]
-      // console.log(output)
+      var name = data.symbol;
 
+      var dates = data.historical.map(row => row['date']);
+      // console.log(dates);
+      var closingPrices = data.historical.map(row => row['close']);
+      console.log(closingPrices);
 
-  //     // // Grab values from the response json object to build the plots
-  //     // if stock === data.all.symbol {
-  //     //   var name = data.all.symbol;
-  //     //   console.log(name);
-  //     //   // var stock = data.dataset.dataset_code;
-  //     //   // var startDate = data.dataset.start_date;
-  //     //   // var endDate = data.dataset.end_date;
-  //     //   // Print the names of the columns
-  //     //   // console.log(data.dataset.column_names);
-  //     //   // Print the data for each day
-  //     //   // console.log(data.dataset.data);
+      var startDate = dates[dates.length - 1];
+      // console.log(startDate);
+      var endDate = dates[0];
 
-  //     //   // var dates = data.dataset.data.map(row => row[0]);
-  //     //   // // console.log(dates);
-  //     //   // var closingPrices = data.dataset.data.map(row => row[4]);
-  //     //   // // console.log(closingPrices);
-  //     // }
+      // console.log(endDate);
+      var trace1 = {
+        type: "scatter",
+        mode: "lines",
+        name: name,
+        x: dates,
+        y: closingPrices,
+        line: {
+          color: "#17BECF"
+        }
+      };
 
-  
-  //     // var trace1 = {
-  //     //   type: "scatter",
-  //     //   mode: "lines",
-  //     //   name: name,
-  //     //   x: dates,
-  //     //   y: closingPrices,
-  //     //   line: {
-  //     //     color: "#17BECF"
-  //     //   }
-  //     // };
-  
-  //     // var data = [trace1];
-  
-  //     // var layout = {
-  //     //   title: `${stock} closing prices`,
-  //     //   xaxis: {
-  //     //     range: [startDate, endDate],
-  //     //     type: "date"
-  //     //   },
-  //     //   yaxis: {
-  //     //     autorange: true,
-  //     //     type: "linear"
-  //     //   }
-  //     // };
-  
-  //     // Plotly.newPlot("plot", data, layout);
-  
+      var data = [trace1];
+
+      var layout = {
+        title: `${stock} closing prices`,
+        xaxis: {
+          range: [startDate, endDate],
+          type: "date"
+        },
+        yaxis: {
+          autorange: true,
+          type: "linear"
+        }
+      };
+
+      Plotly.newPlot("plot", data, layout);
     });
   }
   

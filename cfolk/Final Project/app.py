@@ -21,7 +21,6 @@ def index():
 #         print(stock)
 #     return render_template('index.html', stock=stock)
 
-
             # @app.route('/', methods = ['POST'])
             # def get_stock():
             #     # stock = request.form['stock']
