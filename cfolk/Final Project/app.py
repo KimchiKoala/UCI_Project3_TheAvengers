@@ -14,6 +14,23 @@ def index():
     return render_template('index.html')
 
 
+# @app.route('/stock', methods = ['GET', 'POST'])
+# def form():
+#     if request.method == 'POST':
+#         stock = request.form['stock']
+#         print(stock)
+#     return render_template('index.html', stock=stock)
+
+
+            # @app.route('/', methods = ['POST'])
+            # def get_stock():
+            #     # stock = request.form['stock']
+            #     # processed_stock = stock.upper()
+            #     # return processed_stock
+            #     form_value = request.args.get('stock')
+            #     return print(form_value)
+
+
 # @app.route('/', methods = ['GET', 'POST'])
 # def stock():
 
@@ -51,14 +68,14 @@ def index():
                 #     return render_template('index.html')
 
 
-# @app.route('/read-one')
-# def read_one():
-#     # filt = {'symbol': stock}
-#     # # filt = {'symbol' : 'GOOGL'}
-#     # user = mongo.db.stock_data.find_one(filt)
-#     # output = {'historical' : user['historical']}
-#     # return output
-#     return print(stock)
+@app.route('/read-one')
+def read_one():
+    # filt = {'symbol': stock}
+    # # filt = {'symbol' : 'GOOGL'}
+    # user = mongo.db.stock_data.find_one(filt)
+    # output = {'historical' : user['historical']}
+    # return output
+    return print(stock)
 
 # @app.route('/all')
 # def read_all():
