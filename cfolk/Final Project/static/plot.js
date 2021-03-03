@@ -27,7 +27,7 @@ function handleSubmit() {
       var dates = data.historical.map(row => row['date']);
       // console.log(dates);
       var closingPrices = data.historical.map(row => row['close']);
-      console.log(closingPrices);
+      // console.log(closingPrices);
 
       var startDate = dates[dates.length - 1];
       // console.log(startDate);
