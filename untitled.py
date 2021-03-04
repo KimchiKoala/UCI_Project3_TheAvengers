@@ -15,24 +15,23 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 plt.style.use('fivethirtyeight')
 
-# Pull NASDAQ 100 information from nasdaq_constituent API 
-# Set url
+# Pull NASDAQ 100 information from nasdaq_constituent API to retrieve stock symbols
+# Set url 
 url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
 # Get response using requests.request("GET", url).json()
 response = requests.request("GET", url).json()
 
-# Display reponse in order to use response
-response
-
-# Create empty list to store stock_symbols
+# Create empty list for global variables
 stock_symbols = []
+stock_date = []
+close = []
 
 # for loop through response to append symbol data
 for r in response:
     collect_symbols = r['symbol']
     stock_symbols.append(collect_symbols)
-    
+# Print update to server    
 print('Symbol data collected')
 
 # Create connection to mongoDB
@@ -43,32 +42,35 @@ database_name = 'testing_stock' ### change back to stock_db ###
 collection_name = 'dummy_test' ### change back to stock_data ###
 
 # Connect to database in mongoDB
-db = client.database_name
+db = client[database_name]
 
-# Create function to gather stored data from MongoDB.stock_db
+# Create function to gather stored data from MongoDB.stock_db with a parameter to represent the symbol
 def get_stored_data(s):
-
-    # Retrive data
-    one_stock = db.collection_name.find_one({'symbol': s})
-
+    print('------------------------')
+    print(f'Collecting stored data for {s}')
+    # Retrive data from mongoDB
+    one_stock = db[collection_name].find_one({'symbol': s})
+    
     # Isolate symbol and historical data
     symbol = one_stock['symbol']
     historical_data = one_stock['historical']
 
-    stock_date = []
-    close = []
-
+    #for loop through historical_data to retrive date and close data
     for h in historical_data:
-        
+        # Isolate date data
         collect_dates = h['date']
+        # .ppend
         stock_date.append(collect_dates)
         
         collect_close = h['close']
         close.append(collect_close)
     
+    print(f'Stored data collected for {s}')
     return stock_date, close
 
 def get_update(s, sd):
+    # call get_stored_data() function to have access to stock_date and close data
+    get_stored_data(s)
 
     # Create date variables for API request
     # Set variable for current date 
@@ -76,59 +78,61 @@ def get_update(s, sd):
     #print(current_date)
     # Retrive last date stored in MongoDB
     last_date = max(sd)
-    #print(last_date)
+    print(last_date)
 
     #Create new_start_date to be a day after the last date
+    # Turn last_date into date_time
     date_datetime = datetime.strptime(last_date, '%Y-%m-%d') 
     #print(date)
+    # Using timedelta add 1 day to date_time
     modified_date = date_datetime + timedelta(days=1)
     #print(modified_date)
+    # Turn variable from datetime back to date
     new_start_date = datetime.strftime(modified_date, '%Y-%m-%d')
     #print(new_start_date)
 
-    #print(new_start_date)
-
-    # Set new url to update data
+    # Set new url to retrieve new dates data
     url = f"https://financialmodelingprep.com/api/v3/historical-price-full/{s}?from={new_start_date}&to={current_date}&apikey={api_key}"
 
-    # conditional statement to determine if an update query is needed
+    # Conditional statement to determine if an update query is needed
     # based on if last_data in MongDb < current_date being requested
     if str(last_date) < str(current_date):
-    print(f"Last date in MongoDB for {s} is: {last_date}")
-    # if so send new request fro url with new start and end date
-    new_results = requests.request("GET", url).json()
-    print(f"API Completed for {s}")
+        print(f"Last date in MongoDB for {s} is: {last_date}")
+        # if so send new request fro url with new start and end date
+        new_results = requests.request("GET", url).json()
+        print(f"API Completed for {s}")
 
-    if new_results == False:
-        print("not null")
-        # Isolate historical data
-        historical_update = new_results['historical']
-        #for loop through historacal_update to retrive updated data
-        for h in historical_update:
-            # Retrieve new date and close data
-            date_update = h['date']
-            close_update = h['close']
+        if new_results == False:
+            print("Resulst not null. Retrieving new data")
+            # Isolate historical data
+            historical_update = new_results['historical']
+            #for loop through historacal_update to retrive updated data
+            for h in historical_update:
+                # Retrieve new date and close data
+                date_update = h['date']
+                close_update = h['close']
 
-            # Send update to MongoDb and push tp historical list
-            #db.stock_data.update_one({'symbol': new_input}, {'$push': {'historical': {'date': date_update, 'close': close_update}}})
-            #print(f"{s} MongoDb update complete")   
-    else:
-        print(f"{s} data up to date")
+                # Send update to MongoDb and push tp historical list
+                db.collection_name.update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'close': close_update}}})
+                print(f"{s} MongoDB update complete")   
+        else:
+            print(f"{s} data is up to date")
 
 def machine_learning(s, sd, c):
-
-    get_stored_data(s)
-
-    df = pd.DataFrame({'Date': sd,
-                    'close': c})
-
+    get_update(s, sd)
+    print(f'Starting Machine Learning Model for {s}')
+    # Store stock_date and close data into DataFrame
+    df = pd.DataFrame({'Date': sd,'close': c})
+    
     df['Date'] = pd.to_datetime(df['Date'])
 
+    # set 'Date' as index
     new_df = df.set_index('Date')
 
+    # .shape dataframe
     new_df.shape
 
-    # Create new df with only the 'Close' column
+    # Create data variable for 'Close' column
     data = new_df.filter(['close'])
 
     # Convert df to a numpy array
@@ -137,7 +141,7 @@ def machine_learning(s, sd, c):
     # Get the number of rows to train the model on
     training_data_len = math.ceil(len(dataset) * .8)
 
-    training_data_len
+    #training_data_len
 
     # Scale the data to apply preprocessing scaling before presenting to nueral network
     scaler = MinMaxScaler(feature_range=(0,1))
@@ -157,22 +161,23 @@ def machine_learning(s, sd, c):
     y_train = []
 
     for i in range(60, len(train_data)):
-    # Append past 60 values to x_train
-    # contains 60 vals index from position 0 to position 59
-    x_train.append(train_data[i-60:i, 0])
+        # Append past 60 values to x_train
+        # contains 60 vals index from position 0 to position 59
+        x_train.append(train_data[i-60:i, 0])
 
-    #y_train will contain the 61st value 
-    y_train.append(train_data[i,0])
+        #y_train will contain the 61st value 
+        y_train.append(train_data[i,0])
 
-    # Run below to visualize the x & y trains. x should be an array of 60 values and y should be 1 value being the 61st
-    # Changing to if i<=61 will provide a 2nd pass through
-    if i<=60:
-    # print(x_train)
-    # print(y_train)
-    # print()
+        # Run below to visualize the x & y trains. x should be an array of 60 values and y should be 1 value being the 61st
+        # Changing to if i<=61 will provide a 2nd pass through
+        if i<=60:
+            # print(x_train)
+            # print(y_train)
+            # print()   
 
-    # Convert x_train & y_train to numpy arrays  so we can use them for training the LSTM model
-    x_train, y_train = np.array(x_train), np.array(y_train)
+
+            # Convert x_train & y_train to numpy arrays  so we can use them for training the LSTM model
+            x_train, y_train = np.array(x_train), np.array(y_train)
 
     # Reshape the data because LSTM network expects input to be 3 dimensional and as of now our x_train is 2D
     # number of sample(rows), timesteps(columns), and features(closing price)
@@ -203,7 +208,7 @@ def machine_learning(s, sd, c):
     y_test = dataset[training_data_len: , :]
 
     for i in range(60, len(test_data)):
-    x_test.append(test_data[i-60:i, 0])
+        x_test.append(test_data[i-60:i, 0])
 
     # Convert data to numpy array to use is LSTM model
     x_test = np.array(x_test)
@@ -218,64 +223,88 @@ def machine_learning(s, sd, c):
 
     # Get the root mean squared error. Closer to 0 the better
     rmse = np.sqrt(np.mean(predictions - y_test) **2)
-    rmse
+    #rmse
 
     # Plot the data
     train = data[:training_data_len]
     valid = data[training_data_len:]
     valid['Predictions'] = predictions
 
+    print(f'Prediction results complete for {s}')
+
     return valid
 
 def store_predictions(v):
-
+    machine_learning(v)
+    print(f"Processing {s}'s predictions data")
+    # reset_index for df so that date is no longer and index
     index_valid = v.reset_index()
+    # Convert index_valid back to a DataFrame
     index_valid_df = pd.DataFrame(index_valid)
-    index_valid_df.head()
+    #index_valid_df.head()
 
+    # Create stock_date variable from index_valid_df on 'Date'
     stock_date = index_valid_df['Date']
+    # Create empty list to store only date values
     stock_date_list = []
-
+    # for look through stock_date
     for stock in stock_date:
-    collect_dates = stock
-    clean_dates = datetime.strftime(collect_dates, '%Y-%m-%d')
-    stock_date_list.append(clean_dates)
+        # collect_dates data
+        collect_dates = stock
+        # Convert collect_dates data from datetime to date
+        clean_dates = datetime.strftime(collect_dates, '%Y-%m-%d')
+        # .append clean_dates to stock_date_list
+        stock_date_list.append(clean_dates)
 
     #print(stock_date_list)
 
+    # Create close_data variable from index_valid_df on 'close'
     close_data = index_valid_df['close']
+    # Create empty list to store only close values
     close_data_list = []
-
+    # for look through close_data
     for close in close_data:
-    collect_close = close
-    close_data_list.append(collect_close)
+        # collect_close data
+        collect_close = close
+        # .append collect_close to close_data_list
+        close_data_list.append(collect_close)
 
     #close_data_list
 
+    # Create predictions_data variable from index_valid_df on 'Predictions'
     predictions_data = index_valid_df['Predictions']
+    # Create empty list to store only predictions values
     predicted_data_list = []
-
+    # for loop through predictions_data
     for predict in predictions_data:
-    collect_predict = predict
-    predicted_data_list.append(collect_predict)
+        # collect_predict data
+        collect_predict = predict
+        # .append collect_predict to predicted_data_list
+        predicted_data_list.append(collect_predict)
 
     #predicted_data_list
 
+    # Create dictionary with prediction results to store in MongoDB
     prediction_data = {
     'Date': stock_date_list,
     'Actual Close': close_data_list,
     'Predictions': predicted_data_list
     }
+
     #prediction_data
 
+    # Get current_date to store with results to keep track per day
     current_date = date.today().strftime('%Y-%m-%d')
-    print(current_date)
+    #print(current_date)
 
-    #db.dummy_test.update_one({'symbol': new_input}, {'$push': {'prediction': {'date': current_date, 'prediction_data': prediction_data}}})
-    #print(f'{s} predictions stored in MongoDB')
+    db.collection_name.update_one({'symbol': new_input}, {'$push': {'prediction': {'date': current_date, 'prediction_data': prediction_data}}})
+    print(f"{s}'s predictions stored in MongoDB")
+    print('------------------------------------')
 
 # for stock in stock_symbols:
-#     get_stored_data(stock)
-#     get_update(stock, stock_date)
-#     machine_learning(stock, stock_date, close)
 #     store_predictions(valid)
+get_update('ZM', stock_date)
+print('--------------')
+print(f'stock date data {stock_date}')
+print(f'max stock_date {max(stock_date)}')
+#machine_learning('ZM', stock_date, close)
