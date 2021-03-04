@@ -22,13 +22,18 @@ def read_all():
     for user in users:
         symbol = user['symbol']
         historical = user['historical']
+        predictions = user['prediction']
         # put symbol in symbol
-        out_one = {'symbol': symbol, 'historical': []}
+        out_one = {'symbol': symbol, 'historical': [], 'prediction': []}
         # cycle through historical
         for h in historical:
-            # retrieve information from historical
+            # append formatted data to output
             out_one['historical'].append(h)
-        # append formatted data to output
+        
+        for p in predictions:
+            # append formatted data to output
+            out_one['prediction'].append(p)
+
         output['All'].append(out_one)
 
     # print(output)
