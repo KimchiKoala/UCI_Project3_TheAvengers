@@ -138,6 +138,7 @@ main {
 
 .stock_info4 {
   display: flex;
+  justify-content: center;
   background: linear-gradient(
       to left top, 
       rgba(255,255,255,0.8),
