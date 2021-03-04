@@ -67,23 +67,23 @@ def index():
                 #     return render_template('index.html')
 
 
-@app.route('/read-one')
-def read_one():
-    # filt = {'symbol': stock}
-    # # filt = {'symbol' : 'GOOGL'}
-    # user = mongo.db.stock_data.find_one(filt)
-    # output = {'historical' : user['historical']}
-    # return output
-    return print(stock)
+            # @app.route('/read-one')
+            # def read_one():
+            #     # filt = {'symbol': stock}
+            #     # # filt = {'symbol' : 'GOOGL'}
+            #     # user = mongo.db.stock_data.find_one(filt)
+            #     # output = {'historical' : user['historical']}
+            #     # return output
+            #     return print(stock)
 
-# @app.route('/all')
-# def read_all():
-#     # users = mongo.db.stock_data.find()
-#     # output = {'symbol': users['symbol']}
-#     # return jsonify(output)
+            # @app.route('/all')
+            # def read_all():
+            #     # users = mongo.db.stock_data.find()
+            #     # output = {'symbol': users['symbol']}
+            #     # return jsonify(output)
 
 
-# # , 'historical' : users['historical']
+            # # , 'historical' : users['historical']
 
 @app.route('/all')
 def read_all():

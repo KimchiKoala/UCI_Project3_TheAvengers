@@ -15,33 +15,25 @@ function handleSubmit() {
   }
   
   function buildPlot(stock) {
+    var api_key = "96b47c522f00a29fe1b11cfd2b0b02d9";
 
-    var url = "http://127.0.0.1:5000/all"
+    var url = `https://financialmodelingprep.com/api/v3/historical-price-full/${stock}?apikey=${api_key}`;
 
     d3.json(url).then(function(data) {
-      // var closingPrices = data.map(row => row['symbol']);
+      // console.log(url)
 
-      var info = data['All'];
-      // console.log(info);
+      var name = data.symbol;
 
-      for (i=0; i < info.length; i++) {
-        // var name = info[i].symbol;
-        
-        if (stock === info[i].symbol) {
-          var dates = info[i].historical.map(row=>row['date']);
-          // console.log(dates);
-          var closingPrices = info[i].historical.map(row=>row['close']);
-          // console.log(closingPrices);
-
-        }
-      }
+      var dates = data.historical.map(row => row['date']);
+      // console.log(dates);
+      var closingPrices = data.historical.map(row => row['close']);
+      // console.log(closingPrices);
 
       var startDate = dates[dates.length - 1];
       // console.log(startDate);
-
       var endDate = dates[0];
-      // console.log(endDate);
 
+      // console.log(endDate);
       var trace1 = {
         type: "scatter",
         mode: "lines",
