@@ -68,3 +68,8 @@
 
 
             # # , 'historical' : users['historical']
+
+
+
+            <a class="twitter-timeline" data-lang="en" data-width="600" data-height="600" href="https://twitter.com/KwonEnoch/lists/market-tweets-87584?ref_src=twsrc%5Etfw">A Twitter List by KwonEnoch</a> 
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
