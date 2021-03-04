@@ -48,7 +48,7 @@ function handleSubmit() {
           // variables from predictive array
           var predictionDates = info[i].prediction[0].prediction_data['Date'];
           var predictionPrice = info[i].prediction[0].prediction_data['Predictions'];
-          console.log(predictionDates);
+          // console.log(predictionDates);
 
         }
       }
@@ -139,7 +139,7 @@ function handleSubmit() {
       var layout2 = {
         title: `${stock} Predictive Chart`,
         xaxis: {
-          range: [startPredictFormat, endPredictFormat],
+          range: [startPredictFormat, endDate], //endPredictFormat
           type: "date"
         },
         yaxis: {
@@ -152,6 +152,41 @@ function handleSubmit() {
       Plotly.newPlot("plot", data1, layout1);
       Plotly.newPlot("plot2", data2, layout2);
     });
+
+    // News code below: 
+
+    const newsList = document.querySelector('.news');    
+
+    //show 'error' message box when input field is empty 
+    if (stock == ''){
+        alert('Input field is empty')
+        return
+    }
+
+    //clears the previous search results
+    newsList.innerHTML ='';
+
+    const apiKey2 = '96b47c522f00a29fe1b11cfd2b0b02d9'; 
+
+    let url2 ='https://financialmodelingprep.com/api/v3/stock_news?tickers='+ stock + '&limit=5&apikey=' + apiKey2;
+    
+
+    fetch(url2).then((res) => {
+        return res.json();
+    }).then((data) => {
+        // console.log(data);
+        
+        data.forEach(data =>{
+            let li=document.createElement('li');
+            let a = document.createElement('a');
+            a.setAttribute('href', data.url);
+            a.setAttribute('target','_blank'); //opens another tab
+            a.textContent = data.title;
+            li.appendChild(a);
+            newsList.appendChild(li);
+        })
+    });
+
   }
   
   // Add event listener for submit button
