@@ -70,7 +70,7 @@ function handleSubmit() {
 
       // get and format prediction chart's date as yyyy-mm-dd
       var startPredict = new Date(today);
-      startPredict.setDate(startPredict.getDate() - 90);
+      startPredict.setDate(startPredict.getDate() - 30);
       var ddP = startPredict.getDate();
       var mmP = startPredict.getMonth() + 1;
       var yyyyP = startPredict.getFullYear();
@@ -79,7 +79,7 @@ function handleSubmit() {
       // console.log(startPredictFormat);
 
       var endPredict = new Date(today);
-      endPredict.setDate(endPredict.getDate() + 14);
+      endPredict.setDate(endPredict.getDate() + 10);
       var ddE = endPredict.getDate();
       var mmE = endPredict.getMonth() + 1;
       var yyyyE = endPredict.getFullYear();
@@ -130,8 +130,8 @@ function handleSubmit() {
         yaxis: {
           autorange: true,
           type: "linear"
-        }      
-      
+        },
+        showlegend: true    
       };
 
       var data2 = [trace2, trace3];
