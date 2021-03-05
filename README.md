@@ -20,7 +20,8 @@ A prediction based of historical data is not enough. I also want to see what the
 ```
 
 ## Contributors
-Cassie Folk - [LINKEDIN]() | Cody Tong - [LINKEDIN]() | Enoch Kwon - [LINKEDIN]() | Lindsey Giron - [LINKEDIN]() | Rachel Kim - [LINKEDIN]() | Zane Keller - [LINKEDIN]()
+Cassie Folk - [LINKEDIN]()  
+Cody Tong - [LINKEDIN]() | Enoch Kwon - [LINKEDIN]() | Lindsey Giron - [LINKEDIN]() | Rachel Kim - [LINKEDIN]() | Zane Keller - [LINKEDIN]()
 
 
 ## Language/Technologies Used
