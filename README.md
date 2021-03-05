@@ -1,4 +1,4 @@
- NASDAQ 100 Stock Prediction Analysis with Machine Learning 
+ # NASDAQ 100 Stock Prediction Analysis with Machine Learning 
 
 ## Table of Contents
   * [Description](#Description)
