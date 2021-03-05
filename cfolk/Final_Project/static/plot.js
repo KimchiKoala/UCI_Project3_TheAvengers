@@ -1,3 +1,5 @@
+// import {apiKey} from './config.js';
+
 // Submit Button handler
 function handleSubmit() {
     // Prevent the page from refreshing
@@ -15,7 +17,6 @@ function handleSubmit() {
   }
   
   function buildPlot(stock) {
-
     var url = "http://127.0.0.1:5000/all"
 
     d3.json(url).then(function(data) {
@@ -169,7 +170,6 @@ function handleSubmit() {
     const apiKey2 = '96b47c522f00a29fe1b11cfd2b0b02d9'; 
 
     let url2 ='https://financialmodelingprep.com/api/v3/stock_news?tickers='+ stock + '&limit=5&apikey=' + apiKey2;
-    
 
     fetch(url2).then((res) => {
         return res.json();
