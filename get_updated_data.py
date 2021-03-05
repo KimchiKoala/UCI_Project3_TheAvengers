@@ -10,8 +10,10 @@ from config import api_key
 # Create connection to mongoDB
 client = MongoClient('mongodb://localhost:27017')
 
-# Create connectino to collection stock_db
-db = client.stock_db
+# Create connection to six month and one year database in mongoDB
+# Select stock_data database from mongoDB
+six_months_stock_db = client.six_months_stock_db.six_months
+one_year_stock_db = client.one_year_stock_db.one_year
 
 # Create variable for new_input
 new_input = "AAPL"

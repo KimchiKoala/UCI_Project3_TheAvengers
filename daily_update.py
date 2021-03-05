@@ -15,12 +15,14 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 plt.style.use('fivethirtyeight')
 
+print("Retrieving NASDAQ 100 stock data")
 # Retrieve NASDAQ 100 information from nasdaq_constituent API to retrieve stock symbols
 # Set url 
 url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
 # Get response using requests.request("GET", url).json()
 response = requests.request("GET", url).json()
+print("NASDAQ 100 stock data received")
 
 # Create empty list for global variables
 stock_symbols = []
@@ -34,29 +36,33 @@ for r in response:
     # .append() collect_symbols to global variable stock_symbols
     stock_symbols.append(collect_symbols)
 # Print symbol update to server    
-print('Symbol data collected')
+print('Stock symbol data collected')
 
+print("Connecting to MongoDB")
 # Create connection to mongoDB
 client = MongoClient('mongodb://localhost:27017')
 
-# Set variables to database and collection names
-database_name = 'stock_db'
-collection_name = 'stock_data'
+# Set up database connection for databases in MongoDB
+db = client.stock_db
+six_months_db = client.six_months_stock_db
+one_year_db = client.one_year_stock_db
 
-# Connect to database in mongoDB
-db = client[database_name]
+# Set variables to collection names
+stock_data = 'stock_data'
+six_months = 'six_months'
+one_year = 'one_year'
 
-# Create function to gather stored data from MongoDB.stock_db with a parameter to represent the symbol
-def get_stored_data(s):
+# Create function to gather stored data from MongoDB database
+def get_stored_data(s, d, c):
     # print update to server
     print('------------------------')
     print(f'Collecting stored data for {s}')
 
     # Retrive data from mongoDB
-    one_stock = db[collection_name].find_one({'symbol': s})
+    one_stock = d[c].find_one({'symbol': s})
     
     # Isolate symbol and historical data
-    symbol = one_stock['symbol']
+    #symbol = one_stock['symbol']
     historical_data = one_stock['historical']
 
     #for loop through historical_data to retrive date and close data
@@ -73,9 +79,10 @@ def get_stored_data(s):
     # print update to server
     print(f'Stored data collected for {s}')
 
-def get_update(s, sd):
+# function to identify last date in MongoDB and append new data to database
+def get_update(s, d, c, sd):
     # call get_stored_data() function to have access to stock_date and close data
-    get_stored_data(s)
+    get_stored_data(s, d, c)
 
     # Create date variables for API request
     # Set variable for current date 
@@ -146,14 +153,16 @@ def get_update(s, sd):
                 changeOverTime_update = h['changeOverTime']
 
                 # Send update to MongoDb and push tp historical list
-                db[collection_name].update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'open': open_update, 'high': high_update, 'low': low_update, 'close': close_update, 'adjClose': adjClose_update, 'volume': volume_update, 'unadjustedVolume': unadjustedVolume_update, 'change': change_update, 'changePercent': changePercent_update, 'vwap': vwap_update, 'label': label_update, 'changeOverTime': changeOverTime_update}}})
+                d[c].update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'open': open_update, 'high': high_update, 'low': low_update, 'close': close_update, 'adjClose': adjClose_update, 'volume': volume_update, 'unadjustedVolume': unadjustedVolume_update, 'change': change_update, 'changePercent': changePercent_update, 'vwap': vwap_update, 'label': label_update, 'changeOverTime': changeOverTime_update}}})
                 # Print update to server
-                print(f"{s} MongoDB update complete")   
+                print(f"{s} MongoDB update complete")  
+    else:
+        print(f"{s} Data is already up to date") 
 
 
-def machine_learning(s, sd, c):
+def machine_learning(s, d, c, sd, cl):
     # Call on get_update() function which includes get_stored_data() function
-    get_stored_data(s)
+    get_stored_data(s, d, c)
     # Print update to server
     print(f'Starting Machine Learning Model for {s}')
     # Store stock_date and close data into DataFrame
@@ -315,16 +324,12 @@ def machine_learning(s, sd, c):
 
     #predicted_data_list
 
-
-
-
     # Create dictionary with prediction results to store in MongoDB
     prediction_data = {
     'Date': stock_date_list,
     'Actual Close': close_data_list,
     'Predictions': predicted_data_list
     }
-
     #print(prediction_data)
 
     # Get current_date to store with results to keep track per day
@@ -332,22 +337,37 @@ def machine_learning(s, sd, c):
     #print(current_date)
 
     if not prediction_data:
-        print("No data")
+        print("No prediction data")
     else:
-        db[collection_name].update_one({'symbol': s}, {'$push': {'prediction': {'date': current_date, 'prediction_data': prediction_data}}})
+        d[c].update_one({'symbol': s}, {'$push': {'prediction': {'date': current_date, 'prediction_data': prediction_data}}})
         print(f"{s}'s predictions stored in MongoDB")
         print('------------------------------------')
 
-#### Suggest running one for loop at a time. 
-######## one to update data line 320 and 322, then comment back
-############### the other to pull updated data, run machine learning and store prediction data line 324 and 326, then comment back
+########################################################### 
+#   Suggest running one for loop at a time.               #
+#   In regards to prameters:                              #
+#   s = symbol                                            #
+#   d = database_name (for six_months_db or one_year_db)  #
+#   c = collection_name (for six_months or one_year )     #
+#   sd = stock_date                                       #
+#   cl = close                                            #
+#   get_stored_data(s, d, c)                              #
+#   get_update(s, d, c, sd)                               #
+#   machine_learning(s, d, c, sd, cl)                     #  
+###########################################################
+
+# Run to retrieve stored data
 # for stock in stock_symbols:
 
-#     get_update(stock, stock_date)
+#     get_stored_data(stock, six_months_db, six_months)
 
+# Run to retrieve stored data and append new updated data
+# for stock in stock_symbols:
+
+#     get_update(stock, six_months_db, six_months, stock_date)
+
+# Run to retrieve stored data and create prediction data
 for stock in stock_symbols:
 
-	machine_learning(stock, stock_date, close)
+	machine_learning(stock, six_months_db, six_months, stock_date, close)
 
-#get_update('ZM', stock_date)
-# machine_learning('ZM', stock_date, close)

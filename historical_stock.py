@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """***This script is for setting up our database***
 
 Financial_Modeling_Prep_API_NASDAQ_100.ipynb
@@ -25,33 +24,26 @@ from config import api_key
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from pymongo import MongoClient
-
+# *** UNCOMMENT LINES TO UPLOAD TO DATABASE. See end of code***
 print("Retrieving NASDAQ top 100 stocks")
-# Set url
+# Set url to retrieve NASDAQ top 100 stocks
 url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
 # Get response using requests.request("GET", url).json()
 response = requests.request("GET", url).json()
-
-# Display reponse in order to use response
-#response
 print("NASDAQ top 100 stock received")
+
 # Make response into a dataframe to gather symbol data
 response_df_not_sorted = pd.DataFrame(response)
 response_df = response_df_not_sorted.sort_values('symbol', ascending=False)
-#response_df.head()
 
 # Using endpoint we will extract company inform to render on page
-
 """## NASDAQ 100 History
-
-
 https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
 """
 print("Retrieving stock symbol data")
 # Extract ticker values from 'symbol' column in response_df
 stock_symbol = response_df['symbol']
-#stock_symbol.head()
 
 # Empty list to gather ticker_names
 ticker_names = []
@@ -74,8 +66,6 @@ one_year = current_date + relativedelta(months=-12)
 print(f"One year range date is: {one_year}")
 
 print("Retrieving six month range data")
-# Pull NASDAQ 100 information from nasdaq_constituent API 
-
 # Make url for each ticker for six month range
 six_month_urls = []
 # for loop to itterate through ticker_names
@@ -125,6 +115,7 @@ for url in one_year_urls:
     count +=1
 
 print("One year date range urls set")
+
 print("Connecting to MongoDB")
 # Create connection to mongoDB
 client = MongoClient('mongodb://localhost:27017')
@@ -149,8 +140,8 @@ for response in six_month_json_responses:
     upload_ready = {'symbol': symbol, 'historical': reversing_order}
     
     # Send data to MongoDb and add to collection stock_data
-    six_months_stock_db.insert_one(upload_ready)
-    print("MongoDB six_months_stock_db updated")
+    #six_months_stock_db.insert_one(upload_ready)
+    #print("MongoDB six_months_stock_db updated")
 
 print("Begining upload to one year db")
 # for loop through response to isolate list of dictionary to sort
@@ -167,5 +158,5 @@ for response in one_year_json_responses:
     upload_ready = {'symbol': symbol, 'historical': reversing_order}
     
     # Send data to MongoDb and add to collection stock_data
-    one_year_stock_db.insert_one(upload_ready)
-    print("MongoDB one_year_stock_db updated")
+    #one_year_stock_db.insert_one(upload_ready)
+    #print("MongoDB one_year_stock_db updated")
