@@ -17,32 +17,31 @@ plt.style.use('fivethirtyeight')
 
 # Retrieve NASDAQ 100 information from nasdaq_constituent API to retrieve stock symbols
 # Set url 
-# url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
+url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
 # Get response using requests.request("GET", url).json()
-# response = requests.request("GET", url).json()
+response = requests.request("GET", url).json()
 
 # Create empty list for global variables
-# stock_symbols = ['TSLA', 'AAPL', 'AMZN', 'MSFT', 'NIO', 'NVDA', 'MRNA', 'NKLA', 'FB', 'AMD']
-stock_symbols = ['NKLA', 'FB', 'AMD']
+stock_symbols = []
 stock_date = []
 close = []
 
 # for loop through response to append symbol data
-# for r in response:
-#     # Isolate symbol data
-#     collect_symbols = r['symbol']
-#     # .append() collect_symbols to global variable stock_symbols
-#     stock_symbols.append(collect_symbols)
-# # Print symbol update to server    
-# print('Symbol data collected')
+for r in response:
+    # Isolate symbol data
+    collect_symbols = r['symbol']
+    # .append() collect_symbols to global variable stock_symbols
+    stock_symbols.append(collect_symbols)
+# Print symbol update to server    
+print('Symbol data collected')
 
 # Create connection to mongoDB
 client = MongoClient('mongodb://localhost:27017')
 
 # Set variables to database and collection names
 database_name = 'stock_db'
-collection_name = 'stock_data'
+collection_name = 'stock_data_100'
 
 # Connect to database in mongoDB
 db = client[database_name]
@@ -346,9 +345,9 @@ def machine_learning(s, sd, c):
 
 #     get_update(stock, stock_date)
 
-for stock in stock_symbols:
+# for stock in stock_symbols:
 
-    machine_learning(stock, stock_date, close)
+#     machine_learning(stock, stock_date, closes)
 
-# get_update('ZM', stock_date)
+#get_update('ZM', stock_date)
 # machine_learning('ZM', stock_date, close)

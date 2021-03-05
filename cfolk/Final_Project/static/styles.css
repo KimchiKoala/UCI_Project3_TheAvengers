@@ -7,6 +7,14 @@ body {
     
   }
 
+/* .subheader {
+  font: size 11px;;
+} */
+
+.options {
+  font-size:14px;
+}
+
 .hover_txt {
   font-size:x-small;
 }
