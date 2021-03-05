@@ -321,8 +321,8 @@ def machine_learning(s, sd, c):
 
 #     get_update(stock, stock_date)
 
-for stock in stock_symbols:
+# for stock in stock_symbols:
 
-    machine_learning(stock, stock_date, closes)
+#     machine_learning(stock, stock_date, closes)
 # get_update('XLNX', stock_date)
 # machine_learning('XLNX', stock_date, close)
