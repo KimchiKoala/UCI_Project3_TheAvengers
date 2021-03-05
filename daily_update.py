@@ -75,12 +75,12 @@ def get_stored_data(s):
 
 def get_update(s, sd):
     # call get_stored_data() function to have access to stock_date and close data
-    #get_stored_data(s)
+    get_stored_data(s)
 
     # Create date variables for API request
     # Set variable for current date 
     current_date = date.today()
-    print(current_date)
+    #print(current_date)
     # Retrive last date stored in MongoDB
     last_date = max(sd)
     #print(last_date)
@@ -132,7 +132,7 @@ def get_update(s, sd):
 
 def machine_learning(s, sd, c):
     # Call on get_update() function which includes get_stored_data() function
-    get_update(s, sd)
+    get_stored_data(s)
     # Print update to server
     print(f'Starting Machine Learning Model for {s}')
     # Store stock_date and close data into DataFrame
@@ -314,7 +314,17 @@ def machine_learning(s, sd, c):
         print(f"{s}'s predictions stored in MongoDB")
         print('------------------------------------')
 
-for stock in stock_symbols:
+#### Suggest running one for loop at a time. 
+######## one to update data
+############### the other to pull updated data, run machine learning and store prediction data
+# for stock in stock_symbols:
 
-    get_update(stock, stock_date)
-    machine_learning(stock, stock_date, close)
+#     get_update(stock, stock_date)
+
+# for stock in stock_symbols:
+
+#     machine_learning(stock, stock_date, close)
+
+# Testing one symbol
+# get_update('XLNX', stock_date)
+# machine_learning('XLNX', stock_date, close)
