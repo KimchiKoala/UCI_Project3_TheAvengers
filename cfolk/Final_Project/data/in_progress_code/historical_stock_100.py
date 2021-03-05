@@ -64,7 +64,7 @@ for name in stock_symbol:
 urls = []
 # for loop to itterate through ticker_names
 for row in ticker_names:
-    url_history = "https://financialmodelingprep.com/api/v3/historical-price-full/" + row + "?from=2020-01-01&to=2021-03-05&apikey=" + api_key
+    url_history = "https://financialmodelingprep.com/api/v3/historical-price-full/" + row + "?from=2021-01-01&to=2021-03-05&apikey=" + api_key
     urls.append(url_history)
 
 count = 0

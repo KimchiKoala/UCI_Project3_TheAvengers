@@ -341,13 +341,13 @@ def machine_learning(s, sd, c):
 #### Suggest running one for loop at a time. 
 ######## one to update data line 320 and 322, then comment back
 ############### the other to pull updated data, run machine learning and store prediction data line 324 and 326, then comment back
-# for stock in stock_symbols:
+for stock in stock_symbols:
 
-#     get_update(stock, stock_date)
+    get_update(stock, stock_date)
 
-# for stock in stock_symbols:
+for stock in stock_symbols:
 
-#     machine_learning(stock, stock_date, closes)
+    machine_learning(stock, stock_date, close)
 
 #get_update('ZM', stock_date)
 # machine_learning('ZM', stock_date, close)
