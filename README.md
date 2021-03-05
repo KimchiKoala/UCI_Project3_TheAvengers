@@ -1,4 +1,4 @@
-# Node.js Professional README Generator   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+ NASDAQ 100 Stock Prediction Analysis with Machine Learning 
 
 ## Table of Contents
   * [Description](#Description)
@@ -10,27 +10,40 @@
 
 
 ## Description 
-This application generates a professional readme after the user is prompted questions such as title of the project/application, a description, selected bullet points they would like to make up the table of contents, installation instructions, usage of this project/application, license, contributors, tests, github link and and email. This generated readme can be achieved by forking this application, cloning in to local device. Inquirer library will need to be downloaded as part of the file system to generate the readme.
+This web-application utilizes Machine learning to predict stock prices for the next week by teaching the machine through Scikit-Learn with historic prices.The application is deployed through AWS and the data is pulled both through an AWS stored MongoDB as well as FML Stock API.  
 
 ## User Story
 ```
-AS A developer
-I WANT a README generator
-SO THAT I can quickly create a professional README for a new project
+Investing can be a daunting task for those who are new to the game.
+I want to be able to predict a stocks price over the next week so that I know when is the best time to buy or sell.
+A prediction based of historical data is not enough. I also want to see what the latest news on the company is and what is happening in the market through social media. 
 ```
 
 ## Contributors
-Janneth Alvarado Verduzco - janneth_verduzco@live.com
+Cassie Folk - LINKEDIN
+Cody Tong - LINKEDIN
+Enoch Kwon - LINKEDIN
+Lindsey Giron - LINKEDIN
+Rachel Kim - LINKEDIN
+Zane Keller - LINKEDIN
+
 
 ## Language/Technologies Used
-* JavaScript
-* Markdown- Markup Language
-* Inquirer
-* package.json- NPM package 
+* HTML
+* CSS
+* Bootstrap
+* Javascript
+* Python Pandas
+* MongoDB
+* Flask
+* Scikit-Learn
+* Nginx
+* Gunicorn
+* AWS 
 
 
-## Mock-Up 
-[Video Demonstration](https://drive.google.com/file/d/1ryaVtJ073vqFscW5tlpbJdlwwlnAJB_f/view)
+## Presentation 
+[Presentation Slide](https://docs.google.com/presentation/d/1hKnQ9tkGpCanTi4W3dku7xdHz-cAuIe4QOjKIm6JjrU/edit#slide=id.gc2d595b5a4_1_98)
 
 ### Application Initiation
 ![GitHub Logo](Images/node-index.PNG)
@@ -46,4 +59,4 @@ Janneth Alvarado Verduzco - janneth_verduzco@live.com
 
 
 ## Repository Link
-https://github.com/jannverduzco/09-Node.js-Homework-Professional-README-Generator
+https://github.com/KimchiKoala/UCI_Project3_TheAvengers/
