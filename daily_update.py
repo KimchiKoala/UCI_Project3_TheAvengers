@@ -40,8 +40,8 @@ print('Symbol data collected')
 client = MongoClient('mongodb://localhost:27017')
 
 # Set variables to database and collection names
-database_name = 'testing_stock' ### change back to stock_db ###
-collection_name = 'dummy_test' ### change back to stock_data ###
+database_name = 'stock_db'
+collection_name = 'stock_data'
 
 # Connect to database in mongoDB
 db = client[database_name]
@@ -315,8 +315,8 @@ def machine_learning(s, sd, c):
         print('------------------------------------')
 
 #### Suggest running one for loop at a time. 
-######## one to update data
-############### the other to pull updated data, run machine learning and store prediction data
+######## one to update data line 320 and 322, then comment back
+############### the other to pull updated data, run machine learning and store prediction data line 324 and 326, then comment back
 # for stock in stock_symbols:
 
 #     get_update(stock, stock_date)
@@ -325,6 +325,6 @@ def machine_learning(s, sd, c):
 
 #     machine_learning(stock, stock_date, close)
 
-# Testing one symbol
+# used for testing one symbol
 # get_update('XLNX', stock_date)
 # machine_learning('XLNX', stock_date, close)
