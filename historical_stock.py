@@ -22,10 +22,11 @@ import pymongo
 import requests
 import pandas as pd
 from config import api_key
+from datetime import date, datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from pymongo import MongoClient
 
-
-# Pull NASDAQ 100 information from nasdaq_constituent API 
+print("Retrieving NASDAQ top 100 stocks")
 # Set url
 url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
@@ -34,7 +35,7 @@ response = requests.request("GET", url).json()
 
 # Display reponse in order to use response
 #response
-
+print("NASDAQ top 100 stock received")
 # Make response into a dataframe to gather symbol data
 response_df_not_sorted = pd.DataFrame(response)
 response_df = response_df_not_sorted.sort_values('symbol', ascending=False)
@@ -47,7 +48,7 @@ response_df = response_df_not_sorted.sort_values('symbol', ascending=False)
 
 https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
 """
-
+print("Retrieving stock symbol data")
 # Extract ticker values from 'symbol' column in response_df
 stock_symbol = response_df['symbol']
 #stock_symbol.head()
@@ -59,43 +60,83 @@ ticker_names = []
 for name in stock_symbol:
     ticker_names.append(name)
 
-# Make url for each ticker 
-# urls empty list to gather url's
-urls = []
+print("Stock symbol list prepared")
+
+print("Setting date range for API call")
+# Set variable for current date to gather specific date range
+current_date = date.today()
+print(f"Current_date is: {current_date}")
+# Set variables for six months range
+six_months = current_date + relativedelta(months=-6)
+print(f"Six month range date is: {six_months}")
+# Set variable for one year range
+one_year = current_date + relativedelta(months=-12)
+print(f"One year range date is: {one_year}")
+
+print("Retrieving six month range data")
+# Pull NASDAQ 100 information from nasdaq_constituent API 
+
+# Make url for each ticker for six month range
+six_month_urls = []
 # for loop to itterate through ticker_names
 for row in ticker_names:
-    url_history = "https://financialmodelingprep.com/api/v3/historical-price-full/" + row + "?apikey=" + api_key
-    urls.append(url_history)
-
-
-
+    # Set url for six month data
+    six_month_url = f"https://financialmodelingprep.com/api/v3/historical-price-full/{row}?from={six_months}&to={current_date}&apikey={api_key}"
+    six_month_urls.append(six_month_url)
 
 count = 0
 
-json_responses = []
+six_month_json_responses = []
 
 # for loop through urls to get count 
-for url in urls:
-    response = requests.request("GET", urls[count]).json()
+for url in six_month_urls:
+    response = requests.request("GET", six_month_urls[count]).json()
     # print(f'{count} /// {urls[count]}')
     # print(f'{count} ~~~ {response["historicalStockList"]}')
     # print('__________')
     
-    json_responses.append(response)
+    six_month_json_responses.append(response)
     count +=1
 
-#print(json_responses[0])
+print("Six month date range urls are set")
 
+print("Retrieving one year data range data")
+# Make url for each ticker 
+# urls empty list to gather url's
+one_year_urls = []
+# for loop to itterate through ticker_names
+for row in ticker_names:
+    # Set url for six month data
+    one_year_url = f"https://financialmodelingprep.com/api/v3/historical-price-full/{row}?from={one_year}&to={current_date}&apikey={api_key}"
+    one_year_urls.append(one_year_url)
+
+count = 0
+
+one_year_json_responses = []
+
+# for loop through urls to get count 
+for url in one_year_urls:
+    response = requests.request("GET", one_year_urls[count]).json()
+    # print(f'{count} /// {urls[count]}')
+    # print(f'{count} ~~~ {response["historicalStockList"]}')
+    # print('__________')
+    
+    one_year_json_responses.append(response)
+    count +=1
+
+print("One year date range urls set")
+print("Connecting to MongoDB")
 # Create connection to mongoDB
 client = MongoClient('mongodb://localhost:27017')
 
 # Select stock_data database from mongoDB
-db = client.stock_db
+six_months_stock_db = client.six_months_stock_db.six_months
+one_year_stock_db = client.one_year_stock_db.one_year
 
 # Need to reverse object order in list to be in ascending order
-
+print("Begining upload to six months db")
 # for loop through response to isolate list of dictionary to sort
-for response in json_responses:
+for response in six_month_json_responses:
     # Set symbol as variable
     symbol = response['symbol']
     # Isolate list of historical_data
@@ -108,5 +149,23 @@ for response in json_responses:
     upload_ready = {'symbol': symbol, 'historical': reversing_order}
     
     # Send data to MongoDb and add to collection stock_data
-    #db.stock_data.insert_one(upload_ready)
-    #print("MongoDB stock_data updated")
+    six_months_stock_db.insert_one(upload_ready)
+    print("MongoDB six_months_stock_db updated")
+
+print("Begining upload to one year db")
+# for loop through response to isolate list of dictionary to sort
+for response in one_year_json_responses:
+    # Set symbol as variable
+    symbol = response['symbol']
+    # Isolate list of historical_data
+    historical_data = response['historical']
+    
+    # Set variable to reverse date order. 
+    # Note: reverse needs to =False since ojects are already in descending order *this is key for it to work*
+    reversing_order = sorted(historical_data, key=lambda x: x['date'], reverse=False)
+    # Create dictionary to upload with reversed data
+    upload_ready = {'symbol': symbol, 'historical': reversing_order}
+    
+    # Send data to MongoDb and add to collection stock_data
+    one_year_stock_db.insert_one(upload_ready)
+    print("MongoDB one_year_stock_db updated")

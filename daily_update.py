@@ -108,24 +108,45 @@ def get_update(s, sd):
         new_results = requests.request("GET", url).json()
         # Print update to server
         print(f"API Completed for {s}")
+        #print(new_results)
         
-        # conditional statement to handle up to date data
-        if not new_results:
+        # Isolate historical data      	
+        historical_data = new_results['historical']
+        # Reverse date order 
+        reversing_order = sorted(historical_data, key=lambda x: x['date'], reverse=False)
+        # upload_ready reconstructed order
+        upload_ready = {'symbol': s, 'historical': reversing_order}
+        #print(upload_ready)
+        # for loop through response to isolate list of dictionary to sort
+        
+	    # conditional statement to handle up to date data
+        if not upload_ready:
             # Print update to server
             print(f"{s} data is up to date")
         else:
             # Print update to server
             print("Result not null. Retrieving new data")
             # Isolate historical data
-            historical_update = new_results['historical']
+            historical_update = upload_ready['historical']
             #for loop through historacal_update to retrive updated data
             for h in historical_update:
-                # Retrieve new date and close data
+                # Retrieve new data       
                 date_update = h['date']
+                open_update = h['open']
+                high_update = h['high']
+                low_update = h['low']
                 close_update = h['close']
+                adjClose_update = h['adjClose']
+                volume_update = h['volume']
+                unadjustedVolume_update = h['unadjustedVolume']
+                change_update = h['change']
+                changePercent_update = h['changePercent']
+                vwap_update = h['vwap']
+                label_update = h['label']
+                changeOverTime_update = h['changeOverTime']
 
                 # Send update to MongoDb and push tp historical list
-                db[collection_name].update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'close': close_update}}})
+                db[collection_name].update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'open': open_update, 'high': high_update, 'low': low_update, 'close': close_update, 'adjClose': adjClose_update, 'volume': volume_update, 'unadjustedVolume': unadjustedVolume_update, 'change': change_update, 'changePercent': changePercent_update, 'vwap': vwap_update, 'label': label_update, 'changeOverTime': changeOverTime_update}}})
                 # Print update to server
                 print(f"{s} MongoDB update complete")   
 
@@ -294,6 +315,9 @@ def machine_learning(s, sd, c):
 
     #predicted_data_list
 
+
+
+
     # Create dictionary with prediction results to store in MongoDB
     prediction_data = {
     'Date': stock_date_list,
@@ -321,8 +345,9 @@ def machine_learning(s, sd, c):
 
 #     get_update(stock, stock_date)
 
-# for stock in stock_symbols:
+for stock in stock_symbols:
 
-#     machine_learning(stock, stock_date, closes)
-# get_update('XLNX', stock_date)
-# machine_learning('XLNX', stock_date, close)
+	machine_learning(stock, stock_date, close)
+
+#get_update('ZM', stock_date)
+# machine_learning('ZM', stock_date, close)
