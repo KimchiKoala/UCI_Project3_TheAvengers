@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 plt.style.use('fivethirtyeight')
 
-# Pull NASDAQ 100 information from nasdaq_constituent API to retrieve stock symbols
+# Retrieve NASDAQ 100 information from nasdaq_constituent API to retrieve stock symbols
 # Set url 
 url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
@@ -29,9 +29,11 @@ close = []
 
 # for loop through response to append symbol data
 for r in response:
+    # Isolate symbol data
     collect_symbols = r['symbol']
+    # .append() collect_symbols to global variable stock_symbols
     stock_symbols.append(collect_symbols)
-# Print update to server    
+# Print symbol update to server    
 print('Symbol data collected')
 
 # Create connection to mongoDB
@@ -46,8 +48,10 @@ db = client[database_name]
 
 # Create function to gather stored data from MongoDB.stock_db with a parameter to represent the symbol
 def get_stored_data(s):
+    # print update to server
     print('------------------------')
     print(f'Collecting stored data for {s}')
+
     # Retrive data from mongoDB
     one_stock = db[collection_name].find_one({'symbol': s})
     
@@ -59,28 +63,29 @@ def get_stored_data(s):
     for h in historical_data:
         # Isolate date data
         collect_dates = h['date']
-        # .ppend
+        # .append collected_dates to global variable stock_data
         stock_date.append(collect_dates)
-        
+        # Isolate close data
         collect_close = h['close']
+        # .append collected_dates to global variable close
         close.append(collect_close)
     
+    # print update to server
     print(f'Stored data collected for {s}')
-    return stock_date, close
 
 def get_update(s, sd):
     # call get_stored_data() function to have access to stock_date and close data
-    get_stored_data(s)
+    #get_stored_data(s)
 
     # Create date variables for API request
     # Set variable for current date 
     current_date = date.today()
-    #print(current_date)
+    print(current_date)
     # Retrive last date stored in MongoDB
     last_date = max(sd)
-    print(last_date)
+    #print(last_date)
 
-    #Create new_start_date to be a day after the last date
+    # Create new_start_date to be a day after the last date
     # Turn last_date into date_time
     date_datetime = datetime.strptime(last_date, '%Y-%m-%d') 
     #print(date)
@@ -97,13 +102,20 @@ def get_update(s, sd):
     # Conditional statement to determine if an update query is needed
     # based on if last_data in MongDb < current_date being requested
     if str(last_date) < str(current_date):
+        # Print update to server
         print(f"Last date in MongoDB for {s} is: {last_date}")
         # if so send new request fro url with new start and end date
         new_results = requests.request("GET", url).json()
+        # Print update to server
         print(f"API Completed for {s}")
-
-        if new_results == False:
-            print("Resulst not null. Retrieving new data")
+        
+        # conditional statement to handle up to date data
+        if not new_results:
+            # Print update to server
+            print(f"{s} data is up to date")
+        else:
+            # Print update to server
+            print("Result not null. Retrieving new data")
             # Isolate historical data
             historical_update = new_results['historical']
             #for loop through historacal_update to retrive updated data
@@ -113,13 +125,15 @@ def get_update(s, sd):
                 close_update = h['close']
 
                 # Send update to MongoDb and push tp historical list
-                db.collection_name.update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'close': close_update}}})
+                db[collection_name].update_one({'symbol': s}, {'$push': {'historical': {'date': date_update, 'close': close_update}}})
+                # Print update to server
                 print(f"{s} MongoDB update complete")   
-        else:
-            print(f"{s} data is up to date")
+
 
 def machine_learning(s, sd, c):
+    # Call on get_update() function which includes get_stored_data() function
     get_update(s, sd)
+    # Print update to server
     print(f'Starting Machine Learning Model for {s}')
     # Store stock_date and close data into DataFrame
     df = pd.DataFrame({'Date': sd,'close': c})
@@ -140,13 +154,11 @@ def machine_learning(s, sd, c):
 
     # Get the number of rows to train the model on
     training_data_len = math.ceil(len(dataset) * .8)
-
     #training_data_len
 
     # Scale the data to apply preprocessing scaling before presenting to nueral network
     scaler = MinMaxScaler(feature_range=(0,1))
     scaled_data = scaler.fit_transform(dataset)
-
     # Show scaled data representing values between 0-1
     #scaled_data
 
@@ -170,14 +182,14 @@ def machine_learning(s, sd, c):
 
         # Run below to visualize the x & y trains. x should be an array of 60 values and y should be 1 value being the 61st
         # Changing to if i<=61 will provide a 2nd pass through
-        if i<=60:
+        #if i<=60:
             # print(x_train)
             # print(y_train)
             # print()   
 
 
-            # Convert x_train & y_train to numpy arrays  so we can use them for training the LSTM model
-            x_train, y_train = np.array(x_train), np.array(y_train)
+    # Convert x_train & y_train to numpy arrays  so we can use them for training the LSTM model
+    x_train, y_train = np.array(x_train), np.array(y_train)
 
     # Reshape the data because LSTM network expects input to be 3 dimensional and as of now our x_train is 2D
     # number of sample(rows), timesteps(columns), and features(closing price)
@@ -230,15 +242,13 @@ def machine_learning(s, sd, c):
     valid = data[training_data_len:]
     valid['Predictions'] = predictions
 
+    # Print update to server
     print(f'Prediction results complete for {s}')
 
-    return valid
-
-def store_predictions(v):
-    machine_learning(v)
+    # Print update to server
     print(f"Processing {s}'s predictions data")
     # reset_index for df so that date is no longer and index
-    index_valid = v.reset_index()
+    index_valid = valid.reset_index()
     # Convert index_valid back to a DataFrame
     index_valid_df = pd.DataFrame(index_valid)
     #index_valid_df.head()
@@ -291,20 +301,20 @@ def store_predictions(v):
     'Predictions': predicted_data_list
     }
 
-    #prediction_data
+    #print(prediction_data)
 
     # Get current_date to store with results to keep track per day
     current_date = date.today().strftime('%Y-%m-%d')
     #print(current_date)
 
-    db.collection_name.update_one({'symbol': new_input}, {'$push': {'prediction': {'date': current_date, 'prediction_data': prediction_data}}})
-    print(f"{s}'s predictions stored in MongoDB")
-    print('------------------------------------')
+    if not prediction_data:
+        print("No data")
+    else:
+        db[collection_name].update_one({'symbol': s}, {'$push': {'prediction': {'date': current_date, 'prediction_data': prediction_data}}})
+        print(f"{s}'s predictions stored in MongoDB")
+        print('------------------------------------')
 
-# for stock in stock_symbols:
-#     store_predictions(valid)
-get_update('ZM', stock_date)
-print('--------------')
-print(f'stock date data {stock_date}')
-print(f'max stock_date {max(stock_date)}')
-#machine_learning('ZM', stock_date, close)
+for stock in stock_symbols:
+
+    get_update(stock, stock_date)
+    machine_learning(stock, stock_date, close)
