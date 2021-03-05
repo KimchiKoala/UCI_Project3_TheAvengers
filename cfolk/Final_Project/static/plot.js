@@ -41,10 +41,10 @@ function handleSubmit() {
           // converting historical dates/prices for predictive chart
           var dateLength = dates.length;
           // console.log(dateLength);
-          var predictChartDates = dates.slice(dateLength - 90);
+          var predictChartDates = dates.slice(dateLength - 365);
           // console.log(predictChartDates);
           var priceLength = closingPrices.length;
-          var predictChartPries = closingPrices.slice(priceLength - 90);
+          var predictChartPries = closingPrices.slice(priceLength - 365);
 
           // variables from predictive array
           var predictionDates = info[i].prediction[0].prediction_data['Date'];
@@ -71,7 +71,7 @@ function handleSubmit() {
 
       // get and format prediction chart's date as yyyy-mm-dd
       var startPredict = new Date(today);
-      startPredict.setDate(startPredict.getDate() - 30);
+      startPredict.setDate(startPredict.getDate() - 60);
       var ddP = startPredict.getDate();
       var mmP = startPredict.getMonth() + 1;
       var yyyyP = startPredict.getFullYear();
@@ -80,7 +80,7 @@ function handleSubmit() {
       // console.log(startPredictFormat);
 
       var endPredict = new Date(today);
-      endPredict.setDate(endPredict.getDate() + 10);
+      endPredict.setDate(endPredict.getDate());
       var ddE = endPredict.getDate();
       var mmE = endPredict.getMonth() + 1;
       var yyyyE = endPredict.getFullYear();
@@ -109,16 +109,16 @@ function handleSubmit() {
         }
       }
 
-      var trace3 = {
-        type: "scatter",
-        mode: "lines",
-        name: "Actual",
-        x: predictChartDates,
-        y: predictChartPries,
-        line: {
-          color: "#17BECF"
-        }
-      };
+      // var trace3 = {
+      //   type: "scatter",
+      //   mode: "lines",
+      //   name: "Actual",
+      //   x: predictChartDates,
+      //   y: predictChartPries,
+      //   line: {
+      //     color: "#17BECF"
+      //   }
+      // };
 
       var data1 = [trace1];
 
@@ -135,7 +135,7 @@ function handleSubmit() {
         showlegend: true    
       };
 
-      var data2 = [trace2, trace3];
+      var data2 = [trace2, trace1];
 
       var layout2 = {
         title: `${stock} Predictive Chart`,
