@@ -166,7 +166,7 @@ def machine_learning(s, d, c, sd, cl):
     # Print update to server
     print(f'Starting Machine Learning Model for {s}')
     # Store stock_date and close data into DataFrame
-    df = pd.DataFrame({'Date': sd,'close': c})
+    df = pd.DataFrame({'Date': sd,'close': cl})
     
     df['Date'] = pd.to_datetime(df['Date'])
 
