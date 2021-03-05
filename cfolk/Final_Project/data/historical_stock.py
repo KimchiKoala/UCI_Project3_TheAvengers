@@ -25,22 +25,22 @@ from config import api_key
 from pymongo import MongoClient
 
 
-# Pull NASDAQ 100 information from nasdaq_constituent API 
-# Set url
-url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
+# # Pull NASDAQ 100 information from nasdaq_constituent API 
+# # Set url
+# url = "https://financialmodelingprep.com/api/v3/nasdaq_constituent?apikey="+ api_key
 
-# Get response using requests.request("GET", url).json()
-response = requests.request("GET", url).json()
+# # Get response using requests.request("GET", url).json()
+# response = requests.request("GET", url).json()
 
-# Display reponse in order to use response
-#response
+# # Display reponse in order to use response
+# #response
 
-# Make response into a dataframe to gather symbol data
-response_df_not_sorted = pd.DataFrame(response)
-response_df = response_df_not_sorted.sort_values('symbol', ascending=False)
-#response_df.head()
+# # Make response into a dataframe to gather symbol data
+# response_df_not_sorted = pd.DataFrame(response)
+# response_df = response_df_not_sorted.sort_values('symbol', ascending=False)
+# #response_df.head()
 
-# Using endpoint we will extract company inform to render on page
+# # Using endpoint we will extract company inform to render on page
 
 """## NASDAQ 100 History
 
@@ -48,16 +48,20 @@ response_df = response_df_not_sorted.sort_values('symbol', ascending=False)
 https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
 """
 
-# Extract ticker values from 'symbol' column in response_df
-stock_symbol = response_df['symbol']
-#stock_symbol.head()
+# # Extract ticker values from 'symbol' column in response_df
+# stock_symbol = response_df['symbol']
+# #stock_symbol.head()
 
-# Empty list to gather ticker_names
-ticker_names = []
+# # Empty list to gather ticker_names
+# ticker_names = []
 
-# for loop ticker_column to append name to ticker_names list
-for name in stock_symbol:
-    ticker_names.append(name)
+# # for loop ticker_column to append name to ticker_names list
+# for name in stock_symbol:
+#     ticker_names.append(name)
+
+# Create empty list for global variables
+        # https://www.nasdaq.com/articles/10-most-popular-stocks-on-nasdaq.com-in-2020-2021-01-04
+ticker_names = ['TSLA', 'AAPL', 'AMZN', 'MSFT', 'NIO', 'NVDA', 'MRNA', 'NKLA', 'FB', 'AMD']
 
 # Make url for each ticker 
 # urls empty list to gather url's
