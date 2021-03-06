@@ -9,7 +9,7 @@
 
 
 ## Description 
-This web-application utilizes Machine learning to predict stock prices for the next week by teaching the machine through Scikit-Learn with historic prices.The application is deployed through AWS and the data is pulled both through an AWS stored MongoDB as well as FML Stock API.  
+This web-application implements machine learning to predict stock prices for the next week by teaching the machine through Scikit-Learn with historic prices.The application is deployed through AWS and the data is pulled both through an AWS stored MongoDB as well as FML Stock API.  
 
 ## User Story
 ```
