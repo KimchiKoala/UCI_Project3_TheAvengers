@@ -3,3 +3,6 @@ config.py
 
 # OS generated files
 .DS_Store
+
+#ignore cfolk in progress folder
+cfolk/in_progress/
