@@ -25,7 +25,7 @@ Cody Tong - [LINKEDIN]()
 Enoch Kwon - [LINKEDIN]()  
 Lindsey Giron - [LINKEDIN]()  
 Rachel Kim - [LINKEDIN]()  
-Zane Keller - [LINKEDIN]()
+Zane Keller - [LINKEDIN](https://www.linkedin.com/in/zane-keller22/)
 
 
 ## Language/Technologies Used
