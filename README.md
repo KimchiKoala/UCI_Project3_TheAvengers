@@ -22,7 +22,7 @@ A prediction based of historical data is not enough. I also want to see what the
 [Cassie Folkers](https://www.linkedin.com/in/cassandrafolkers/)  
 [Cody Tong](https://www.linkedin.com/in/cody-tong/)  
 [Enoch Kwon](https://www.linkedin.com/in/enoch-kwon-m-a-40064bb8/)  
-[Lindsey Giron]()  
+[Lindsey Giron](https://www.linkedin.com/in/lindsey-g-47a770103/)  
 [Rachel Kim]()  
 [Zane Keller](https://www.linkedin.com/in/zane-keller22/)
 
