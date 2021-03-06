@@ -42,16 +42,15 @@ function handleSubmit() {
           var predictionPrice = info[i].prediction[0].prediction_data['Predictions'];
           // console.log(predictionDates);
           // console.log(predictionPrice);
-          // var predictionDatesClean = predictionDates[]
 
-          // // converting historical dates/prices for predictive chart
-          var dateLength = predictionDates.length;
-          // console.log(dateLength);
-          var predictChartDates = predictionDates.slice(dateLength - 180);
-          // console.log(predictChartDates);
-          var priceLength = predictionPrice.length;
-          var predictChartPries = predictionPrice.slice(priceLength - 180);
-
+        // // converting historical dates/prices for predictive chart
+        var dateLength = predictionDates.length;
+        // console.log(dateLength);
+        var predictChartDates = predictionDates.slice(Math.max(dateLength - 90, 0));
+        console.log(predictChartDates);
+        var priceLength = predictionPrice.length;
+        var predictChartPries = predictionPrice.slice(Math.max(priceLength - 90, 0));
+        console.log(predictChartPries);
         }
       }
 
@@ -103,23 +102,23 @@ function handleSubmit() {
         type: "scatter",
         mode: "lines",
         name: "Predictions",
-        x: predictionDates,
-        y: predictionPrice,
+        x: predictChartDates,
+        y: predictChartPries,
         line: {
             color: "#f08080"
         }
       }
 
-      var trace3 = {
-        type: "scatter",
-        mode: "lines",
-        name: "Actual",
-        x: predictChartDates,
-        y: predictChartPries,
-        line: {
-          color: "#17BECF"
-        }
-      };
+      // var trace3 = {
+      //   type: "scatter",
+      //   mode: "lines",
+      //   name: "Actual",
+      //   x: predictChartDates,
+      //   y: predictChartPries,
+      //   line: {
+      //     color: "#17BECF"
+      //   }
+      // };
 
       var data1 = [trace1];
 
@@ -136,7 +135,7 @@ function handleSubmit() {
         showlegend: true    
       };
 
-      var data2 = [trace2, trace3];
+      var data2 = [trace1, trace2];
 
       var layout2 = {
         title: `${stock} Predictive Chart Last 60 Days`,

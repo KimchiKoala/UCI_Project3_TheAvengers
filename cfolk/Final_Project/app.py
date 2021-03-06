@@ -18,7 +18,7 @@ def index():
 
 @app.route('/all')
 def read_all():
-    users = mongo.db.top_10.find()
+    users = mongo.db.six_months.find()
     output = {'All': []}
     # cycle through users
     for user in users:
