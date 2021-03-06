@@ -23,8 +23,7 @@ plt.style.use('fivethirtyeight')
 # response = requests.request("GET", url).json()
 
 # Create empty list for global variables
-# stock_symbols = ['TSLA', 'AAPL', 'AMZN', 'MSFT', 'NIO', 'NVDA', 'MRNA', 'NKLA', 'FB', 'AMD']
-stock_symbols = ['NKLA', 'FB', 'AMD']
+stock_symbols = ['TSLA', 'AAPL', 'AMZN', 'MSFT', 'NIO', 'NVDA', 'MRNA', 'NKLA', 'FB', 'AMD']
 stock_date = []
 close = []
 

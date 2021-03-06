@@ -25,11 +25,11 @@ def read_all():
         predictions = user['prediction']
         # put symbol in symbol
         out_one = {'symbol': symbol, 'historical': [], 'prediction': []}
-        # cycle through historical
+        # cycle through historical to extract data
         for h in historical:
             # append formatted data to output
             out_one['historical'].append(h)
-        
+        # cycle through predictions to extract data        
         for p in predictions:
             # append formatted data to output
             out_one['prediction'].append(p)
