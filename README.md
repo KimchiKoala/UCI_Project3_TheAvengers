@@ -45,18 +45,6 @@ A prediction based of historical data is not enough. I also want to see what the
 ## Presentation 
 [Presentation Slide](https://docs.google.com/presentation/d/1hKnQ9tkGpCanTi4W3dku7xdHz-cAuIe4QOjKIm6JjrU/edit#slide=id.gc2d595b5a4_1_98)
 
-### Application Initiation
-![GitHub Logo](Images/node-index.PNG)
-
-### Prompt Walkthrough
-![GitHub Logo](Images/first-3-questions.PNG)
-
-### Prompt Walkthrough
-![GitHub Logo](Images/last-questions.PNG)
-
-### Successful Written Readme
-![GitHub Logo](Images/readme-generated.PNG)
-
 
 ## Repository Link
 https://github.com/KimchiKoala/UCI_Project3_TheAvengers/
