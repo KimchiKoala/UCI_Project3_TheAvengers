@@ -25,7 +25,7 @@ A prediction based of historical data is not enough. I also want to see what the
 [Enoch Kwon](https://www.linkedin.com/in/enoch-kwon-m-a-40064bb8/)  
 [Lindsey Giron]()  
 [Rachel Kim]()  
-Zane Keller - [LINKEDIN](https://www.linkedin.com/in/zane-keller22/)
+[Zane Keller](https://www.linkedin.com/in/zane-keller22/)
 
 
 ## Language/Technologies Used
