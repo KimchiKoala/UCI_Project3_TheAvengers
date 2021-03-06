@@ -4,13 +4,12 @@
   * [Description](#Description)
   * [User Story](#User-Story)
   * [Contributors](#Contributors)
-  * [Language/Technoligies Used](#Language/Technologies-Used)
-  * [Mock-Up](#Mock-Up)    
+  * [Language/Technoligies Used](#Language/Technologies-Used)  
   * [Repository](#Repository-Link)
 
 
 ## Description 
-This web-application utilizes Machine learning to predict stock prices for the next week by teaching the machine through Scikit-Learn with historic prices.The application is deployed through AWS and the data is pulled both through an AWS stored MongoDB as well as FML Stock API.  
+This web-application implements machine learning to predict historical predictions by teaching the machine through Scikit-Learn with historic prices from the prior 6 months.The application is deployed through AWS and the data is pulled both through an AWS stored MongoDB as well as FMP Stock API.  
 
 ## User Story
 ```
@@ -20,12 +19,12 @@ A prediction based of historical data is not enough. I also want to see what the
 ```
 
 ## Contributors
-Cassie Folk - [LINKEDIN]()  
-Cody Tong - [LINKEDIN]()  
-Enoch Kwon - [LINKEDIN]()  
-Lindsey Giron - [LINKEDIN]()  
-Rachel Kim - [LINKEDIN]()  
-Zane Keller - [LINKEDIN]()
+[Cassie Folkers](https://www.linkedin.com/in/cassandrafolkers/)  
+[Cody Tong](https://www.linkedin.com/in/cody-tong/)  
+[Enoch Kwon](https://www.linkedin.com/in/enoch-kwon-m-a-40064bb8/)  
+[Lindsey Giron](https://www.linkedin.com/in/lindsey-g-47a770103/)  
+[Rachel Kim](https://www.linkedin.com/in/sukhyun-kim/)  
+[Zane Keller](https://www.linkedin.com/in/zane-keller22/)
 
 
 ## Language/Technologies Used
@@ -44,18 +43,6 @@ Zane Keller - [LINKEDIN]()
 
 ## Presentation 
 [Presentation Slide](https://docs.google.com/presentation/d/1hKnQ9tkGpCanTi4W3dku7xdHz-cAuIe4QOjKIm6JjrU/edit#slide=id.gc2d595b5a4_1_98)
-
-### Application Initiation
-![GitHub Logo](Images/node-index.PNG)
-
-### Prompt Walkthrough
-![GitHub Logo](Images/first-3-questions.PNG)
-
-### Prompt Walkthrough
-![GitHub Logo](Images/last-questions.PNG)
-
-### Successful Written Readme
-![GitHub Logo](Images/readme-generated.PNG)
 
 
 ## Repository Link
