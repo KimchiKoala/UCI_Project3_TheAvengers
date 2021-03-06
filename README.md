@@ -20,11 +20,11 @@ A prediction based of historical data is not enough. I also want to see what the
 ```
 
 ## Contributors
-Cassie Folk - [LINKEDIN]()  
-Cody Tong - [LINKEDIN]()  
-Enoch Kwon - [LINKEDIN]()  
-Lindsey Giron - [LINKEDIN]()  
-Rachel Kim - [LINKEDIN]()  
+[Cassie Folkers](https://www.linkedin.com/in/cassandrafolkers/)  
+[Cody Tong]()  
+[Enoch Kwon](https://www.linkedin.com/in/enoch-kwon-m-a-40064bb8/)  
+[Lindsey Giron]()  
+[Rachel Kim]()  
 Zane Keller - [LINKEDIN](https://www.linkedin.com/in/zane-keller22/)
 
 
