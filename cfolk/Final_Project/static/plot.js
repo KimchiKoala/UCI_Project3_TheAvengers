@@ -17,7 +17,7 @@ function handleSubmit() {
   }
   
   function buildPlot(stock) {
-    var url = "http://127.0.0.1:5000/all"
+    var url = "https://uci-project3.herokuapp.com/"
 
     d3.json(url).then(function(data) {
       // var closingPrices = data.map(row => row['symbol']);
