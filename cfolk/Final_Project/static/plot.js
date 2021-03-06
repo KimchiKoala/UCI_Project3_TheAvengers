@@ -138,7 +138,7 @@ function handleSubmit() {
       var data2 = [trace1, trace2];
 
       var layout2 = {
-        title: `${stock} Predictive Chart Last 60 Days`,
+        title: `${stock} Predictive Chart Last 90 Days`,
         xaxis: {
           range: [startPredictFormat, endDate], //endPredictFormat
           type: "date"
