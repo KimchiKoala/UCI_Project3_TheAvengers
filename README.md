@@ -21,7 +21,7 @@ A prediction based of historical data is not enough. I also want to see what the
 
 ## Contributors
 [Cassie Folkers](https://www.linkedin.com/in/cassandrafolkers/)  
-[Cody Tong]()  
+[Cody Tong](https://www.linkedin.com/in/cody-tong/)  
 [Enoch Kwon](https://www.linkedin.com/in/enoch-kwon-m-a-40064bb8/)  
 [Lindsey Giron]()  
 [Rachel Kim]()  
