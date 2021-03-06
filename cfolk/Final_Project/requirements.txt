@@ -20,9 +20,6 @@ Keras==2.3.1
 lxml==4.6.2
 MarkupSafe==1.1.1
 mistune==0.8.4
-mkl-fft==1.2.0
-mkl-random==1.1.1
-mkl-service==2.3.0
 mongoengine==0.22.1
 mrjob==0.7.4
 numpy==1.19.5
@@ -46,3 +43,6 @@ traitlets==4.3.3
 webencodings==0.5.1
 wrapt==1.12.1
 WTForms==2.3.3
+idna==2.5
+Jinja2>=2.10.3
+gunicorn>=20.0.0
