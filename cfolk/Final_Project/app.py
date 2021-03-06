@@ -7,7 +7,8 @@ from flask_mongoengine import MongoEngine
 app = Flask(__name__)
 
 # app.config["MONGO_URI"] = "mongodb://localhost:27017/six_months_db"
-100 
+app.config["MONGO_URI"] = "mongodb://localhost:27017/stock_db"
+
 mongo = PyMongo(app)
 
 @app.route('/')
@@ -17,7 +18,7 @@ def index():
 
 @app.route('/all')
 def read_all():
-    users = mongo.db.top_ten.find()
+    users = mongo.db.top_10.find()
     output = {'All': []}
     # cycle through users
     for user in users:
