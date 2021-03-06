@@ -46,4 +46,7 @@ A prediction based of historical data is not enough. I also want to see what the
 
 
 ## Repository Link
-https://github.com/KimchiKoala/UCI_Project3_TheAvengers/
+https://github.com/KimchiKoala/Heroku_UCI
+
+## Application Link
+https://uci-project3.herokuapp.com/
